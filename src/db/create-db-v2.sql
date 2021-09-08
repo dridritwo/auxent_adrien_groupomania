@@ -11,8 +11,11 @@ CREATE TABLE IF NOT EXISTS `groupomania`.`users` (
   `username` VARCHAR(45) NULL,
   `user_creation_date` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
   `role` VARCHAR(5) NOT NULL DEFAULT 'user',
+  `avatar_url` TEXT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE INDEX `id_UNIQUE` (`id` ASC) INVISIBLE)
+  UNIQUE INDEX `id_UNIQUE` (`id` ASC) INVISIBLE,
+  UNIQUE INDEX `email_UNIQUE` (`email` ASC) VISIBLE,
+  UNIQUE INDEX `username_UNIQUE` (`username` ASC) VISIBLE)
 ENGINE = InnoDB;
 
 DROP TABLE IF EXISTS `groupomania`.`posts`; 
