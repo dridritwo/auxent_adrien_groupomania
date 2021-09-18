@@ -21,10 +21,7 @@ exports.createUserSchema = [
         .isLength({ min: 6 })
         .withMessage('Password must contain at least 6 characters')
         .isLength({ max: 20 })
-        .withMessage('Password can contain max 20 characters'),
-    body('avatar_url')
-        .isURL()
-        .withMessage('Should be a valid URL')
+        .withMessage('Password can contain max 20 characters')
 ];
 
 exports.updateUserSchema = [
