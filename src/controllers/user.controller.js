@@ -53,6 +53,8 @@ class UserController {
     };
 
     createUser = async (req, res, next) => {
+        let avatarUrl = `https://avatars.dicebear.com/api/avataaars/${req.body.username}.svg`;
+        req.body.avatar_url = avatarUrl;
         this.checkValidation(req);
 
         await this.hashPassword(req);
