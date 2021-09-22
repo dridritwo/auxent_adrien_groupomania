@@ -28,8 +28,6 @@ CREATE TABLE IF NOT EXISTS `groupomania`.`posts` (
   `title` VARCHAR(45) NOT NULL,
   `author_id` INT UNSIGNED NOT NULL,
   `creation_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `likes` INT UNSIGNED NOT NULL,
-  `dislikes` INT UNSIGNED NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE INDEX `post_id_UNIQUE` (`id` ASC) VISIBLE,
   INDEX `author_id_idx` (`author_id` ASC) VISIBLE,
@@ -38,7 +36,7 @@ CREATE TABLE IF NOT EXISTS `groupomania`.`posts` (
     REFERENCES `groupomania`.`users` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
-ENGINE = InnoDB;
+ENGINE = InnoDB
 
 DROP TABLE IF EXISTS `groupomania`.`post_likes`; 
 
