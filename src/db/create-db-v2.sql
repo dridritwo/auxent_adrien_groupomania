@@ -1,3 +1,6 @@
+CREATE USER 'groupomania'@'localhost' IDENTIFIED BY 'group8546';
+GRANT ALL PRIVILEGES ON groupomania.* TO 'groupomania'@'localhost';
+
 DROP DATABASE IF EXISTS groupomania; 
 
 CREATE DATABASE groupomania CHARACTER SET 'utf8';

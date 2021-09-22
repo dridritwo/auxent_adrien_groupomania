@@ -57,6 +57,8 @@ class UserController {
 
         await this.hashPassword(req);
 
+        req.body.avatar_url = `https://avatars.dicebear.com/api/avataaars/${req.body.username}.svg`;
+
         const result = await UserModel.create(req.body);
 
         if (!result) {
@@ -126,6 +128,7 @@ class UserController {
     checkValidation = (req) => {
         const errors = validationResult(req)
         if (!errors.isEmpty()) {
+            console.log("errors : ", errors)
             throw new HttpException(400, 'Validation faild', errors);
         }
     }
