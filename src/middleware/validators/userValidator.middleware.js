@@ -41,17 +41,10 @@ exports.updateUserSchema = [
         .withMessage('Password must contain at least 6 characters')
         .isLength({ max: 20 })
         .withMessage('Password can contain max 20 characters'),
-    body()
-        .custom(value => {
-            return !!Object.keys(value).length;
-        })
-        .withMessage('Please provide required field to update')
-        .custom(value => {
-            const updates = Object.keys(value);
-            const allowUpdates = ['username', 'password', 'email'];
-            return updates.every(update => allowUpdates.includes(update));
-        })
-        .withMessage('Invalid updates!')
+    body('avatar_url')
+        .optional()
+        .notEmpty()
+        .withMessage('Please provide url')
 ];
 
 exports.validateLogin = [

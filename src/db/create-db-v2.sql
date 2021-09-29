@@ -7,7 +7,7 @@ CREATE DATABASE groupomania CHARACTER SET 'utf8';
 
 DROP TABLE IF EXISTS `groupomania`.`users`; 
 
-CREATE TABLE IF NOT EXISTS `groupomania`.`users` (
+CREATE TABLE IF NOT EXISTS `users` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `email` VARCHAR(45) NOT NULL,
   `password` VARCHAR(128) NOT NULL,
@@ -16,9 +16,9 @@ CREATE TABLE IF NOT EXISTS `groupomania`.`users` (
   `role` VARCHAR(5) NOT NULL DEFAULT 'user',
   `avatar_url` TEXT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE INDEX `id_UNIQUE` (`id` ASC) INVISIBLE,
-  UNIQUE INDEX `email_UNIQUE` (`email` ASC) VISIBLE,
-  UNIQUE INDEX `username_UNIQUE` (`username` ASC) VISIBLE)
+  UNIQUE INDEX `id_UNIQUE` (`id` ASC),
+  UNIQUE INDEX `email_UNIQUE` (`email` ASC),
+  UNIQUE INDEX `username_UNIQUE` (`username` ASC))
 ENGINE = InnoDB;
 
 DROP TABLE IF EXISTS `groupomania`.`posts`; 
