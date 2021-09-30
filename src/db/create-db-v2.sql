@@ -23,20 +23,22 @@ ENGINE = InnoDB;
 
 DROP TABLE IF EXISTS `groupomania`.`posts`; 
 
-CREATE TABLE IF NOT EXISTS `groupomania`.`posts` (
+CREATE TABLE IF NOT EXISTS `posts` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `title` VARCHAR(45) NOT NULL,
   `author_id` INT UNSIGNED NOT NULL,
+  `text` MEDIUMTEXT,
+  `image_url` TEXT,
   `creation_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
-  UNIQUE INDEX `post_id_UNIQUE` (`id` ASC) VISIBLE,
-  INDEX `author_id_idx` (`author_id` ASC) VISIBLE,
+  UNIQUE INDEX `post_id_UNIQUE` (`id` ASC),
+  INDEX `author_id_idx` (`author_id` ASC),
   CONSTRAINT `author_id`
     FOREIGN KEY (`author_id`)
-    REFERENCES `groupomania`.`users` (`id`)
+    REFERENCES `users` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
-ENGINE = InnoDB
+ENGINE = InnoDB;
 
 DROP TABLE IF EXISTS `groupomania`.`post_likes`; 
 
