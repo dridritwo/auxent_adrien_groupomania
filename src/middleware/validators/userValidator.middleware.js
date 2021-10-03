@@ -7,7 +7,7 @@ exports.createUserSchema = [
         .exists()
         .withMessage('username is required')
         .isLength({ min: 3 })
-        .withMessage('Must be at least 3 chars long'),
+        .withMessage('Username must be at least 3 chars long'),
     body('email')
         .exists()
         .withMessage('Email is required')
@@ -28,7 +28,7 @@ exports.updateUserSchema = [
     body('username')
         .optional()
         .isLength({ min: 3 })
-        .withMessage('Must be at least 3 chars long'),
+        .withMessage('Username must be at least 3 chars long'),
     body('email')
         .optional()
         .isEmail()
