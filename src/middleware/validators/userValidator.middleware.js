@@ -5,46 +5,38 @@ const Role = require('../../utils/userRoles.utils');
 exports.createUserSchema = [
     body('username')
         .exists()
-        .withMessage('username is required')
+        .withMessage("Nom d'utilisateur obligatoire")
         .isLength({ min: 3 })
-        .withMessage('Username must be at least 3 chars long'),
+        .withMessage("Le nom d'utilisateur doit faire au moins 3 caractères de long"),
     body('email')
         .exists()
-        .withMessage('Email is required')
+        .withMessage('Email est obligatoire')
         .isEmail()
-        .withMessage('Must be a valid email')
+        .withMessage("Doit être un email valide")
         .normalizeEmail(),
     body('password')
         .exists()
-        .withMessage('Password is required')
+        .withMessage('Mot de pass obligatoire')
         .notEmpty()
         .isLength({ min: 6 })
-        .withMessage('Password must contain at least 6 characters')
-        .isLength({ max: 20 })
-        .withMessage('Password can contain max 20 characters')
+        .withMessage('Mot de pass doit faire au moins 6 caractères')
+        .isLength({ max: 30 })
+        .withMessage('Le mot de pass ne peut pas faire plus de 30 caractères')
 ];
 
 exports.updateUserSchema = [
     body('username')
-        .optional()
         .isLength({ min: 3 })
-        .withMessage('Username must be at least 3 chars long'),
+        .withMessage("Le nom d'utilisateur doit faire au moins 3 caractères de long"),
     body('email')
-        .optional()
         .isEmail()
-        .withMessage('Must be a valid email')
+        .withMessage("L'email doit être valide")
         .normalizeEmail(),
-    body('password')
-        .optional()
-        .notEmpty()
-        .isLength({ min: 6 })
-        .withMessage('Password must contain at least 6 characters')
-        .isLength({ max: 20 })
-        .withMessage('Password can contain max 20 characters'),
     body('avatar_url')
-        .optional()
         .notEmpty()
-        .withMessage('Please provide url')
+        .withMessage('Il faut une image')
+        .custom((value, { req }) => value.substring(0, 4) === "http")
+        .withMessage("Il faut une url")
 ];
 
 exports.validateLogin = [
