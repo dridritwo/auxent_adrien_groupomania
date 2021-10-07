@@ -17,11 +17,20 @@ class PostController {
         }
 
         postList = postList.map(post => {
-            const { password, ...userWithoutPassword } = post;
-            return userWithoutPassword;
+            const formatedPost = {
+                authorName: post.username,
+                authorAvatarUrl: post.avatar_url,
+                title: post.title,
+                text: post.text,
+                postImageUrl: post.image_url,
+                postCreationDate: post.creation_date,
+                authorId: post.author_id,
+                postId: post.id
+            }
+            return formatedPost;
         });
 
-        res.send(userList);
+        res.send(postList);
     };
 
     getUserById = async (req, res, next) => {

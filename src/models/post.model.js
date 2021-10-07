@@ -1,10 +1,12 @@
 const query = require('../db/db-connection');
 const { multipleColumnSet } = require('../utils/common.utils');
-class UserModel {
+class PostModel {
     tableName = 'posts';
 
     find = async (params = {}) => {
-        let sql = `SELECT * FROM ${this.tableName}`;
+        let sql = `select u.avatar_url, u.username, p.title , p.text, p.image_url , p.creation_date, p.author_id, p.id from ${this.tableName} p INNER JOIN users u 
+        ON p.author_id = u.id`;
+        
 
         if (!Object.keys(params).length) {
             return await query(sql);
@@ -58,4 +60,4 @@ class UserModel {
     }
 }
 
-module.exports = new UserModel;
+module.exports = new PostModel;
