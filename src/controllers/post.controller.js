@@ -11,7 +11,9 @@ dotenv.config();
  ******************************************************************************/
 class PostController {
     getAllPosts = async (req, res, next) => {
-        let postList = await PostModel.find();
+        let page = req.query.page ? req.query.page : 0;
+        let limit = req.query.limit ? req.query.limit : 5;
+        let postList = await PostModel.find(page, limit);
         if (!postList.length) {
             throw new HttpException(404, 'Users not found');
         }

@@ -3,19 +3,12 @@ const { multipleColumnSet } = require('../utils/common.utils');
 class PostModel {
     tableName = 'posts';
 
-    find = async (params = {}) => {
+    find = async (page, limit) => {
+        let offset = limit * page;
         let sql = `select u.avatar_url, u.username, p.title , p.text, p.image_url , p.creation_date, p.author_id, p.id from ${this.tableName} p INNER JOIN users u 
-        ON p.author_id = u.id`;
+        ON p.author_id = u.id order by creation_date desc limit ${limit} offset ${offset}`;
         
-
-        if (!Object.keys(params).length) {
-            return await query(sql);
-        }
-
-        const { columnSet, values } = multipleColumnSet(params)
-        sql += ` WHERE ${columnSet}`;
-
-        return await query(sql, [...values]);
+        return await query(sql);
     }
 
     findOne = async (params) => {
