@@ -68,7 +68,7 @@ class PostController {
         this.checkValidation(req);
 
         await this.hashPassword(req);
-        req.body.author_id = req.params.id;
+        req.body.author_id = req.currentUser.id;
 
         const result = await PostModel.create(req.body);
 
