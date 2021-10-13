@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const postController = require('../controllers/post.controller');
-const userController = require('../controllers/post.controller');
 const auth = require('../middleware/auth.middleware');
 const postAuth = require('../middleware/postAuth.middleware');
 const Role = require('../utils/userRoles.utils');
@@ -12,7 +11,6 @@ const { createPostSchema, updatePostSchema } = require('../middleware/validators
 
 router.get('/', auth(), awaitHandlerFactory(postController.getAllPosts)); // localhost:3000/api/v1/posts
 router.get('/author_id/:author_id', auth(Role.user, Role.admin), awaitHandlerFactory(postController.getPostsByAuthorId)); // localhost:3000/api/v1/posts/id/1
-router.get('/username/:username', auth(), awaitHandlerFactory(userController.getUserByuserName)); // localhost:3000/api/v1/users/username/julia
 router.post('/', auth(), createPostSchema, awaitHandlerFactory(postController.createPost)); // localhost:3000/api/v1/posts/
 router.patch('/id/:id', postAuth(Role.superAdmin), updatePostSchema, awaitHandlerFactory(postController.updatePost)); // localhost:3000/api/v1/posts/id/1 , using patch for partial update
 router.delete('/id/:id', postAuth(Role.admin), awaitHandlerFactory(postController.deletePost)); // localhost:3000/api/v1/posts/id/1
