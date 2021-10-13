@@ -14,7 +14,7 @@ router.get('/', auth(), awaitHandlerFactory(postController.getAllPosts)); // loc
 router.get('/author_id/:author_id', auth(Role.user, Role.admin), awaitHandlerFactory(postController.getPostsByAuthorId)); // localhost:3000/api/v1/posts/id/1
 router.get('/username/:username', auth(), awaitHandlerFactory(userController.getUserByuserName)); // localhost:3000/api/v1/users/username/julia
 router.post('/', auth(), createPostSchema, awaitHandlerFactory(postController.createPost)); // localhost:3000/api/v1/posts/
-router.patch('/id/:id', postAuth(Role.admin), updatePostSchema, awaitHandlerFactory(postController.updatePost)); // localhost:3000/api/v1/posts/id/1 , using patch for partial update
+router.patch('/id/:id', postAuth(Role.superAdmin), updatePostSchema, awaitHandlerFactory(postController.updatePost)); // localhost:3000/api/v1/posts/id/1 , using patch for partial update
 router.delete('/id/:id', postAuth(Role.admin), awaitHandlerFactory(postController.deletePost)); // localhost:3000/api/v1/posts/id/1
 
 
