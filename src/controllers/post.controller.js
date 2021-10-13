@@ -27,7 +27,7 @@ class PostController {
                 postImageUrl: post.image_url,
                 postCreationDate: post.creation_date,
                 authorId: post.author_id,
-                postId: post.id
+                id: post.id
             }
             return formatedPost;
         });
