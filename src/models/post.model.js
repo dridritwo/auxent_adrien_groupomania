@@ -2,6 +2,7 @@ const query = require('../db/db-connection');
 const { multipleColumnSet } = require('../utils/common.utils');
 class PostModel {
     tableName = 'posts';
+    postsView = 'posts_view';
 
     find = async (page, limit) => {
         let offset = limit * page;
