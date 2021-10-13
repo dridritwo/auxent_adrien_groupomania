@@ -3,6 +3,7 @@ const router = express.Router();
 const postController = require('../controllers/post.controller');
 const userController = require('../controllers/post.controller');
 const auth = require('../middleware/auth.middleware');
+const postAuth = require('../middleware/postAuth.middleware');
 const Role = require('../utils/userRoles.utils');
 const awaitHandlerFactory = require('../middleware/awaitHandlerFactory.middleware');
 
@@ -15,7 +16,7 @@ router.get('/username/:username', auth(), awaitHandlerFactory(userController.get
 router.get('/whoami', auth(), awaitHandlerFactory(userController.getCurrentUser)); // localhost:3000/api/v1/users/whoami
 router.post('/id/:id', auth(), createPostSchema, awaitHandlerFactory(postController.createPost)); // localhost:3000/api/v1/posts/id/1
 router.patch('/id/:id', auth(Role.admin), updateUserSchema, awaitHandlerFactory(userController.updateUser)); // localhost:3000/api/v1/users/id/1 , using patch for partial update
-router.delete('/id/:id', auth(Role.admin), awaitHandlerFactory(userController.deleteUser)); // localhost:3000/api/v1/users/id/1
+router.delete('/id/:id', postAuth(Role.admin), awaitHandlerFactory(postController.deletePost)); // localhost:3000/api/v1/posts/id/1
 
 
 router.post('/login', validateLogin, awaitHandlerFactory(userController.userLogin)); // localhost:3000/api/v1/users/login

@@ -100,12 +100,12 @@ class PostController {
         res.send({ message, info });
     };
 
-    deleteUser = async (req, res, next) => {
-        const result = await UserModel.delete(req.params.id);
+    deletePost = async (req, res, next) => {
+        const result = await PostModel.delete(req.params.id);
         if (!result) {
-            throw new HttpException(404, 'User not found');
+            throw new HttpException(404, 'Post not found');
         }
-        res.send('User has been deleted');
+        res.send('Post has been deleted');
     };
 
     userLogin = async (req, res, next) => {
