@@ -23,6 +23,20 @@ class PostModel {
         return result[0];
     }
 
+    findAllByAuthorId = async (params, page, limit) => {
+        let offset = limit * page;
+        const { columnSet, values } = multipleColumnSet(params)
+
+        const sql = `select u.avatar_url, u.username, p.title , p.text, p.image_url , p.creation_date, p.author_id, p.id from ${this.tableName} p INNER JOIN users u 
+        ON p.author_id = u.id
+        WHERE ${columnSet} order by creation_date desc limit ${limit} offset ${offset}`;
+
+        const result = await query(sql, [...values]);
+
+        // return back the first row 
+        return result;
+    }
+
     create = async ({ title, text, image_url, author_id }) => {
         const sql = `INSERT INTO ${this.tableName}
         (title, text, image_url, author_id) VALUES (?,?,?,?)`;

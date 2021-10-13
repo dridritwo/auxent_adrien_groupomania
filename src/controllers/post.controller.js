@@ -14,8 +14,8 @@ class PostController {
         let page = req.query.page ? req.query.page : 0;
         let limit = req.query.limit ? req.query.limit : 5;
         let postList = await PostModel.find(page, limit);
-        if (!postList.length) {
-            throw new HttpException(404, 'Users not found');
+        if (!postList) {
+            throw new HttpException(404, 'Posts not found');
         }
 
         postList = postList.map(post => {
@@ -35,39 +35,34 @@ class PostController {
         res.send(postList);
     };
 
-    getUserById = async (req, res, next) => {
-        const user = await UserModel.findOne({ id: req.params.id });
-        if (!user) {
-            throw new HttpException(404, 'User not found');
+    getPostsByAuthorId = async (req, res, next) => {
+        let page = req.query.page ? req.query.page : 0;
+        let limit = req.query.limit ? req.query.limit : 5;
+        let postList = await PostModel.findAllByAuthorId({ author_id: req.params.author_id }, page, limit);
+        if (!postList) {
+            throw new HttpException(404, 'Posts not found');
         }
 
-        const { password, ...userWithoutPassword } = user;
+        postList = postList.map(post => {
+            const formatedPost = {
+                authorName: post.username,
+                authorAvatarUrl: post.avatar_url,
+                title: post.title,
+                text: post.text,
+                postImageUrl: post.image_url,
+                postCreationDate: post.creation_date,
+                authorId: post.author_id,
+                id: post.id
+            }
+            return formatedPost;
+        });
 
-        res.send(userWithoutPassword);
-    };
-
-    getUserByuserName = async (req, res, next) => {
-        const user = await UserModel.findOne({ username: req.params.username });
-        if (!user) {
-            throw new HttpException(404, 'User not found');
-        }
-
-        const { password, ...userWithoutPassword } = user;
-
-        res.send(userWithoutPassword);
-    };
-
-    getCurrentUser = async (req, res, next) => {
-        const { password, ...userWithoutPassword } = req.currentUser;
-
-        res.send(userWithoutPassword);
+        res.send(postList);
     };
 
     createPost = async (req, res, next) => {
         
         this.checkValidation(req);
-
-        await this.hashPassword(req);
         req.body.author_id = req.currentUser.id;
 
         const result = await PostModel.create(req.body);
@@ -79,14 +74,12 @@ class PostController {
         res.status(201).send('Post was created!');
     };
 
-    updateUser = async (req, res, next) => {
+    updatePost = async (req, res, next) => {
         this.checkValidation(req);
-
-        await this.hashPassword(req);
 
         // do the update query and get the result
         // it can be partial edit
-        const result = await UserModel.update(req.body, req.params.id);
+        const result = await PostModel.update(req.body, req.params.id);
 
         if (!result) {
             throw new HttpException(404, 'Something went wrong');
@@ -94,8 +87,8 @@ class PostController {
 
         const { affectedRows, changedRows, info } = result;
 
-        const message = !affectedRows ? 'User not found' :
-            affectedRows && changedRows ? 'User updated successfully' : 'Updated faild';
+        const message = !affectedRows ? 'Post not found' :
+            affectedRows && changedRows ? 'Post updated successfully' : 'Updated faild';
 
         res.send({ message, info });
     };
@@ -108,34 +101,6 @@ class PostController {
         res.send('Post has been deleted');
     };
 
-    userLogin = async (req, res, next) => {
-        this.checkValidation(req);
-
-        const { email, password: pass } = req.body;
-
-        const user = await UserModel.findOne({ email });
-
-        if (!user) {
-            throw new HttpException(401, 'Unable to login!');
-        }
-
-        const isMatch = await bcrypt.compare(pass, user.password);
-
-        if (!isMatch) {
-            throw new HttpException(401, 'Incorrect password!');
-        }
-
-        // user matched!
-        const secretKey = process.env.SECRET_JWT || "";
-        const token = jwt.sign({ user_id: user.id.toString() }, secretKey, {
-            expiresIn: '24h'
-        });
-
-        const { password, ...userWithoutPassword } = user;
-
-        res.send({ ...userWithoutPassword, token });
-    };
-
     checkValidation = (req) => {
         const errors = validationResult(req)
         if (!errors.isEmpty()) {
@@ -144,12 +109,7 @@ class PostController {
         }
     }
 
-    // hash password if it exists
-    hashPassword = async (req) => {
-        if (req.body.password) {
-            req.body.password = await bcrypt.hash(req.body.password, 8);
-        }
-    }
+    
 }
 
 
