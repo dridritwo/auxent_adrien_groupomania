@@ -42,22 +42,21 @@ ENGINE = InnoDB;
 
 DROP TABLE IF EXISTS `groupomania`.`post_likes`; 
 
-CREATE TABLE IF NOT EXISTS `groupomania`.`post_likes` (
+CREATE TABLE IF NOT EXISTS `post_likes` (
   `post_likes_pk` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `user_id` INT UNSIGNED NOT NULL,
   `post_id` INT UNSIGNED NOT NULL,
-  `likes_status` TINYINT NULL,
-  `dislikes_status` TINYINT NULL,
-  INDEX `post_id_idx` (`post_id` ASC) VISIBLE,
+  `like_status` TINYINT NULL,
+  INDEX `post_id_idx` (`post_id` ASC),
   PRIMARY KEY (`post_likes_pk`),
   CONSTRAINT `user_id`
     FOREIGN KEY (`user_id`)
-    REFERENCES `groupomania`.`users` (`id`)
+    REFERENCES `users` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `post_id`
     FOREIGN KEY (`post_id`)
-    REFERENCES `groupomania`.`posts` (`id`)
+    REFERENCES `posts` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
