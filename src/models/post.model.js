@@ -4,12 +4,29 @@ class PostModel {
     tableName = 'posts';
     postsView = 'posts_view';
 
-    find = async (page, limit) => {
+    find = async (page, limit, currentUserId) => {
         let offset = limit * page;
-        let sql = `select u.avatar_url, u.username, p.title , p.text, p.image_url , p.creation_date, p.author_id, p.id from ${this.tableName} p INNER JOIN users u 
-        ON p.author_id = u.id order by creation_date desc limit ${limit} offset ${offset}`;
+        let sql = `select 
+        p.id, 
+        u.id as author_id, 
+        (select count(pl.like_status) from post_likes pl where like_status = 1 and pl.post_id = p.id) as likes, 
+        (select count(pl.like_status) from post_likes pl where like_status = -1 and pl.post_id = p.id) as dislikes, 
+        (select pl.like_status from post_likes pl where u.id = ? and post_id = p.id) as like_status,
+        p.title, 
+        p.text, 
+        p.image_url , 
+        p.creation_date, 
+        u.avatar_url as author_avatar_url, 
+        u.username as author_usernamer
+            from posts p 
+            inner join users u on p.author_id = u.id
+            cross join post_likes pl
+            group by p.id 
+            order by creation_date desc 
+            limit ? 
+            offset ?`;
         
-        return await query(sql);
+        return await query(sql, [currentUserId, limit, page]);
     }
 
     findOne = async (params) => {
@@ -24,15 +41,32 @@ class PostModel {
         return result[0];
     }
 
-    findAllByAuthorId = async (params, page, limit) => {
+    findAllByAuthorId = async (params, page, limit, currentUserId) => {
         let offset = limit * page;
         const { columnSet, values } = multipleColumnSet(params)
 
-        const sql = `select u.avatar_url, u.username, p.title , p.text, p.image_url , p.creation_date, p.author_id, p.id from ${this.tableName} p INNER JOIN users u 
-        ON p.author_id = u.id
-        WHERE ${columnSet} order by creation_date desc limit ${limit} offset ${offset}`;
+        const sql = `select 
+        p.id, 
+        u.id as author_id, 
+        (select count(pl.like_status) from post_likes pl where like_status = 1 and pl.post_id = p.id) as likes, 
+        (select count(pl.like_status) from post_likes pl where like_status = -1 and pl.post_id = p.id) as dislikes, 
+        (select pl.like_status from post_likes pl where u.id = ? and post_id = p.id) as like_status,
+        p.title, 
+        p.text, 
+        p.image_url , 
+        p.creation_date, 
+        u.avatar_url as author_avatar_url, 
+        u.username as author_usernamer
+            from posts p 
+            inner join users u on p.author_id = u.id
+            cross join post_likes pl
+            where ${columnSet}
+            group by p.id 
+            order by creation_date desc 
+            limit ? 
+            offset ?`;
 
-        const result = await query(sql, [...values]);
+        const result = await query(sql, [...values, currentUserId, limit, offset]);
 
         // return back the first row 
         return result;

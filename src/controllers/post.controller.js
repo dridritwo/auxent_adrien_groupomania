@@ -13,7 +13,7 @@ class PostController {
     getAllPosts = async (req, res, next) => {
         let page = req.query.page ? req.query.page : 0;
         let limit = req.query.limit ? req.query.limit : 5;
-        let postList = await PostModel.find(page, limit);
+        let postList = await PostModel.find(page, limit, req.currentUser.id);
         if (!postList) {
             throw new HttpException(404, 'Posts not found');
         }
@@ -21,13 +21,16 @@ class PostController {
         postList = postList.map(post => {
             const formatedPost = {
                 authorName: post.username,
-                authorAvatarUrl: post.avatar_url,
+                authorAvatarUrl: post.author_avatar_url,
                 title: post.title,
                 text: post.text,
                 postImageUrl: post.image_url,
                 postCreationDate: post.creation_date,
                 authorId: post.author_id,
-                id: post.id
+                id: post.id,
+                likes: post.likes,
+                dislikes: post.dislikes,
+                likeStatus: post.like_status
             }
             return formatedPost;
         });
@@ -38,7 +41,7 @@ class PostController {
     getPostsByAuthorId = async (req, res, next) => {
         let page = req.query.page ? req.query.page : 0;
         let limit = req.query.limit ? req.query.limit : 5;
-        let postList = await PostModel.findAllByAuthorId({ author_id: req.params.author_id }, page, limit);
+        let postList = await PostModel.findAllByAuthorId({ author_id: req.params.author_id }, page, limit, req.currentUser.id);
         if (!postList) {
             throw new HttpException(404, 'Posts not found');
         }
@@ -46,13 +49,16 @@ class PostController {
         postList = postList.map(post => {
             const formatedPost = {
                 authorName: post.username,
-                authorAvatarUrl: post.avatar_url,
+                authorAvatarUrl: post.author_avatar_url,
                 title: post.title,
                 text: post.text,
                 postImageUrl: post.image_url,
                 postCreationDate: post.creation_date,
                 authorId: post.author_id,
-                id: post.id
+                id: post.id,
+                likes: post.likes,
+                dislikes: post.dislikes,
+                likeStatus: post.like_status
             }
             return formatedPost;
         });

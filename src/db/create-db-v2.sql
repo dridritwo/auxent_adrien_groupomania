@@ -108,7 +108,8 @@ select
     where
       like_status = -1
       and pl.post_id = p.id
-  ) as dislikes,
+  ) as dislikes, 
+        (select pl.like_status from post_likes pl where u.id = ? and post_id = p.id) as like_status,
   p.title,
   p.`text`,
   p.image_url,
