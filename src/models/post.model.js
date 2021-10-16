@@ -11,13 +11,13 @@ class PostModel {
         u.id as author_id, 
         (select count(pl.like_status) from post_likes pl where like_status = 1 and pl.post_id = p.id) as likes, 
         (select count(pl.like_status) from post_likes pl where like_status = -1 and pl.post_id = p.id) as dislikes, 
-        (select pl.like_status from post_likes pl where u.id = ? and post_id = p.id) as like_status,
+        (select pl.like_status from post_likes pl where user_id = ? and post_id = p.id) as like_status,
         p.title, 
         p.text, 
         p.image_url , 
-        p.creation_date, 
+        p.creation_date,
         u.avatar_url as author_avatar_url, 
-        u.username as author_usernamer
+        u.username as author_username
             from posts p 
             inner join users u on p.author_id = u.id
             cross join post_likes pl
@@ -26,7 +26,7 @@ class PostModel {
             limit ? 
             offset ?`;
         
-        return await query(sql, [currentUserId, limit, page]);
+        return await query(sql, [currentUserId, limit, offset]);
     }
 
     findOne = async (params) => {
@@ -50,13 +50,13 @@ class PostModel {
         u.id as author_id, 
         (select count(pl.like_status) from post_likes pl where like_status = 1 and pl.post_id = p.id) as likes, 
         (select count(pl.like_status) from post_likes pl where like_status = -1 and pl.post_id = p.id) as dislikes, 
-        (select pl.like_status from post_likes pl where u.id = ? and post_id = p.id) as like_status,
+        (select pl.like_status from post_likes pl where user_id = ? and post_id = p.id) as like_status,
         p.title, 
         p.text, 
         p.image_url , 
-        p.creation_date, 
+        p.creation_date,
         u.avatar_url as author_avatar_url, 
-        u.username as author_usernamer
+        u.username as author_username
             from posts p 
             inner join users u on p.author_id = u.id
             cross join post_likes pl
@@ -65,7 +65,6 @@ class PostModel {
             order by creation_date desc 
             limit ? 
             offset ?`;
-
         const result = await query(sql, [...values, currentUserId, limit, offset]);
 
         // return back the first row 

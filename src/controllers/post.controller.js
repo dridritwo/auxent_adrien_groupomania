@@ -13,6 +13,7 @@ class PostController {
     getAllPosts = async (req, res, next) => {
         let page = req.query.page ? req.query.page : 0;
         let limit = req.query.limit ? req.query.limit : 5;
+        
         let postList = await PostModel.find(page, limit, req.currentUser.id);
         if (!postList) {
             throw new HttpException(404, 'Posts not found');
@@ -20,7 +21,7 @@ class PostController {
 
         postList = postList.map(post => {
             const formatedPost = {
-                authorName: post.username,
+                authorName: post.author_username,
                 authorAvatarUrl: post.author_avatar_url,
                 title: post.title,
                 text: post.text,
@@ -30,11 +31,10 @@ class PostController {
                 id: post.id,
                 likes: post.likes,
                 dislikes: post.dislikes,
-                likeStatus: post.like_status
+                likeStatus: post.like_status || 0
             }
             return formatedPost;
         });
-
         res.send(postList);
     };
 
@@ -48,7 +48,7 @@ class PostController {
 
         postList = postList.map(post => {
             const formatedPost = {
-                authorName: post.username,
+                authorName: post.author_username,
                 authorAvatarUrl: post.author_avatar_url,
                 title: post.title,
                 text: post.text,
@@ -58,7 +58,7 @@ class PostController {
                 id: post.id,
                 likes: post.likes,
                 dislikes: post.dislikes,
-                likeStatus: post.like_status
+                likeStatus: post.like_status || 0
             }
             return formatedPost;
         });
