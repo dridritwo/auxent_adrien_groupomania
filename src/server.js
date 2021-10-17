@@ -6,6 +6,7 @@ const errorMiddleware = require('./middleware/error.middleware');
 const userRouter = require('./routes/user.route');
 const postRouter = require('./routes/post.route');
 const likeRouter = require('./routes/like.route');
+const commentRouter = require('./routes/comment.route');
 
 // Init express
 const app = express();
@@ -24,6 +25,7 @@ const port = Number(process.env.PORT || 3331);
 app.use(`/api/v1/users`, userRouter);
 app.use(`/api/v1/posts`, postRouter);
 app.use(`/api/v1/likes`, likeRouter);
+app.use(`/api/v1/comments`, commentRouter);
 
 // 404 error
 app.all('*', (req, res, next) => {

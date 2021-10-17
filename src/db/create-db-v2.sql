@@ -52,17 +52,17 @@ CREATE TABLE IF NOT EXISTS `post_likes` (
 
 DROP TABLE IF EXISTS `groupomania`.`comments`;
 
-CREATE TABLE IF NOT EXISTS `groupomania`.`comments` (
+CREATE TABLE IF NOT EXISTS `comments` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `author_id` INT UNSIGNED NOT NULL,
   `post_id` INT UNSIGNED NOT NULL,
   `text` MEDIUMTEXT NOT NULL,
   `creation_date` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
-  INDEX `comment_user_id_idx` (`author_id` ASC) VISIBLE,
-  INDEX `post_id_idx` (`post_id` ASC) VISIBLE,
-  CONSTRAINT `comment_author_id` FOREIGN KEY (`author_id`) REFERENCES `groupomania`.`users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `comment_post_id` FOREIGN KEY (`post_id`) REFERENCES `groupomania`.`posts` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  INDEX `comment_user_id_idx` (`author_id` ASC),
+  INDEX `post_id_idx` (`post_id` ASC),
+  CONSTRAINT `comment_author_id` FOREIGN KEY (`author_id`) REFERENCES `users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `comment_post_id` FOREIGN KEY (`post_id`) REFERENCES `posts` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE = InnoDB;
 
 create view like_count as
