@@ -1,10 +1,10 @@
 const query = require('../db/db-connection');
 const { multipleColumnSet } = require('../utils/common.utils');
 class CommentModel {
-    tableName = 'post_likes';
+    tableName = 'comments';
 
     
-    findOne = async ({post_id, user_id}) => {
+    findOne = async ({comment_id}) => {
 
         const sql = `SELECT * FROM ${this.tableName}
         WHERE user_id= ? AND post_id= ?`;
@@ -14,12 +14,12 @@ class CommentModel {
         // return back the first row 
         return result[0];
     }
-
-    create = async ({ user_id, post_id, like_status }) => {
+    
+    create = async ({ post_id, author_id, text }) => {
         const sql = `INSERT INTO ${this.tableName}
-        (user_id, post_id, like_status) VALUES (?,?,?)`;
+        (post_id, author_id, text) VALUES (?,?,?)`;
 
-        const result = await query(sql, [user_id, post_id, like_status]);
+        const result = await query(sql, [post_id, author_id, text]);
         const affectedRows = result ? result.affectedRows : 0;
 
         return affectedRows;

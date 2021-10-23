@@ -21,24 +21,12 @@ const commentAuth = (...roles) => {
             // Verify Token
             const decoded = jwt.verify(token, secretKey);
             const user = await UserModel.findOne({ id: decoded.user_id });
-
+            
             if (!user) {
                 throw new HttpException(401, 'Authentication failed!');
             }
-
-            // check if the current user is the owner of post
-            const post = await postModel.findOne({ id: req.params.id})
-            const ownerAuthorized = post.author_id == user.id;
-
-            // if the current user is not the owner and
-            // if the user role don't have the permission to do this action.
-            // the user will get this error
-            if (!ownerAuthorized && roles.length && !roles.includes(user.role)) {
-                throw new HttpException(401, 'Unauthorized');
-            }
-
-            // if the user has permissions
             req.currentUser = user;
+
             next();
 
         } catch (e) {

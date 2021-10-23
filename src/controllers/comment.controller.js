@@ -1,5 +1,6 @@
 const CommentModel = require("../models/comment.model");
 const LikeModel = require("../models/like.model");
+const PostModel = require("../models/post.model");
 const HttpException = require("../utils/HttpException.utils");
 const { validationResult } = require("express-validator");
 const dotenv = require("dotenv");
@@ -9,36 +10,26 @@ dotenv.config();
  *                              Like Controller
  ******************************************************************************/
 class CommentController {
-  likePost = async (req, res, next) => {
+  createComment = async (req, res, next) => {
     this.checkValidation(req);
-    let postId = parseInt(req.params.id, 10);
-    // check if like exists on post id and user id
-    const likeExists = await LikeModel.findOne({
-      user_id: req.currentUser.id,
-      post_id: postId,
-    });
-    let result;
-    if (likeExists) {
-      // if exist update like
-      result = await LikeModel.update(
-        { like_status: req.body.like },
-        postId,
-        req.currentUser.id
-      );
-    } else {
-      // if not exist create like
-      result = await LikeModel.create({
-        like_status: req.body.like,
-        post_id: postId,
-        user_id: req.currentUser.id,
-      });
+    // check if the post exists
+    const post = await PostModel.findOne({ id: req.params.post_id})
+            
+    if (!post) {
+        throw new HttpException(404, 'Post not found');
     }
+    
+    const result = await CommentModel.create({
+      post_id: post.id,
+      author_id: req.currentUser.id,
+      text: req.body.text
+    })
 
     if (!result) {
       throw new HttpException(500, "Something went wrong");
     }
 
-    res.status(201).send("Like was created!");
+    res.status(201).send("Comment was created!");
   };
 
   checkValidation = (req) => {
