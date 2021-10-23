@@ -31,7 +31,8 @@ class PostController {
                 id: post.id,
                 likes: post.likes,
                 dislikes: post.dislikes,
-                likeStatus: post.like_status || 0
+                likeStatus: post.like_status || 0,
+                commentsCount: post.comments_count
             }
             return formatedPost;
         });
@@ -58,7 +59,8 @@ class PostController {
                 id: post.id,
                 likes: post.likes,
                 dislikes: post.dislikes,
-                likeStatus: post.like_status || 0
+                likeStatus: post.like_status || 0,
+                commentsCount: post.comments_count
             }
             return formatedPost;
         });

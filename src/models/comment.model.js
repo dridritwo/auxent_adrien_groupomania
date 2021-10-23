@@ -3,6 +3,17 @@ const { multipleColumnSet } = require('../utils/common.utils');
 class CommentModel {
     tableName = 'comments';
 
+    getByPostId = async (post_id) => {
+
+        const sql = `SELECT c.id, c.author_id , c.post_id, c.text, c.creation_date, u.username as username, u.avatar_url as avatarUrl 
+            FROM ${this.tableName} c
+            inner join users u on c.author_id = u.id 
+            WHERE post_id= ? order by creation_date desc `;
+
+        const result = await query(sql, [post_id]);
+
+        return result;
+    }
     
     findOne = async ({comment_id}) => {
 

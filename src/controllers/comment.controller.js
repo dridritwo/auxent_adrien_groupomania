@@ -32,6 +32,15 @@ class CommentController {
     res.status(201).send("Comment was created!");
   };
 
+  getPostsByPostId = async (req, res, next) => {
+    const commentList = await CommentModel.getByPostId(req.params.post_id);
+    if (!commentList) {
+      throw new HttpException(404, "Comments not found");
+    }
+
+    res.send(commentList);
+  }
+
   checkValidation = (req) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
