@@ -18,9 +18,9 @@ class CommentModel {
     findOne = async ({comment_id}) => {
 
         const sql = `SELECT * FROM ${this.tableName}
-        WHERE user_id= ? AND post_id= ?`;
+        WHERE id= ? `;
 
-        const result = await query(sql, [user_id, post_id]);
+        const result = await query(sql, [comment_id]);
 
         // return back the first row 
         return result[0];
@@ -46,7 +46,14 @@ class CommentModel {
         return result;
     }
 
-    
+    delete = async (id) => {
+        const sql = `DELETE FROM ${this.tableName}
+        WHERE id = ?`;
+        const result = await query(sql, [id]);
+        const affectedRows = result ? result.affectedRows : 0;
+
+        return affectedRows;
+    }
 }
 
 module.exports = new CommentModel;

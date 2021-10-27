@@ -32,7 +32,7 @@ class CommentController {
     res.status(201).send("Comment was created!");
   };
 
-  getPostsByPostId = async (req, res, next) => {
+  getCommentsByPostId = async (req, res, next) => {
     const commentList = await CommentModel.getByPostId(req.params.post_id);
     if (!commentList) {
       throw new HttpException(404, "Comments not found");
@@ -40,6 +40,14 @@ class CommentController {
 
     res.send(commentList);
   }
+
+  deleteComment = async (req, res, next) => {
+    const result = await CommentModel.delete(req.params.comment_id);
+    if (!result) {
+        throw new HttpException(404, 'Comment not found');
+    }
+    res.send('Comment has been deleted');
+};
 
   checkValidation = (req) => {
     const errors = validationResult(req);
