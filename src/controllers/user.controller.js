@@ -10,18 +10,9 @@ dotenv.config();
  *                              User Controller
  ******************************************************************************/
 class UserController {
-    getAllUsers = async (req, res, next) => {
-        let userList = await UserModel.find();
-        if (!userList.length) {
-            throw new HttpException(404, 'Users not found');
-        }
-
-        userList = userList.map(user => {
-            const { password, ...userWithoutPassword } = user;
-            return userWithoutPassword;
-        });
-
-        res.send(userList);
+    getUser = async (req, res, next) => {
+        const { password, ...userWithoutPassword } = req.currentUser;
+        res.status(200).send(userWithoutPassword);
     };
 
     getUserById = async (req, res, next) => {
