@@ -10,6 +10,7 @@ const { createPostSchema, updatePostSchema } = require('../middleware/validators
 
 
 router.get('/', auth(), awaitHandlerFactory(postController.getAllPosts)); // localhost:3000/api/v1/posts
+router.get('/hottest', auth(), awaitHandlerFactory(postController.getAllHottestPosts)); // localhost:3000/api/v1/posts/hottest
 router.get('/author_id/:author_id', auth(Role.user, Role.admin), awaitHandlerFactory(postController.getPostsByAuthorId)); // localhost:3000/api/v1/posts/id/1
 router.post('/', auth(), createPostSchema, awaitHandlerFactory(postController.createPost)); // localhost:3000/api/v1/posts/
 router.patch('/id/:id', postAuth(Role.superAdmin), updatePostSchema, awaitHandlerFactory(postController.updatePost)); // localhost:3000/api/v1/posts/id/1 , using patch for partial update

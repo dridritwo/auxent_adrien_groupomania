@@ -30,6 +30,46 @@ class PostModel {
         return await query(sql, [currentUserId, limit, offset]);
     }
 
+
+    findHottest = async (page, limit, currentUserId) => {
+        let offset = limit * page;
+        let sql = `select 
+        p.id, 
+        u.id as author_id, 
+        (select count(pl.like_status) from post_likes pl where like_status = 1 and pl.post_id = p.id) as likes, 
+        (
+        (
+        (select count(pl.like_status) from post_likes pl where like_status = 1 and pl.post_id = p.id)
+        +
+        ((select count(pl.like_status) from post_likes pl where like_status = -1 and pl.post_id = p.id) / 2)
+        +
+        (select count(1) from comments where post_id = p.id)
+        )
+        /
+        (TIMESTAMPDIFF(day, p.creation_date , CURDATE()) + 1)
+        )
+        as hotness,
+        (select count(pl.like_status) from post_likes pl where like_status = -1 and pl.post_id = p.id) as dislikes, 
+        (select pl.like_status from post_likes pl where user_id = ? and post_id = p.id) as like_status,
+        (select count(1) from comments where post_id = p.id) as comments_count,
+        p.title, 
+        p.text, 
+        p.image_url , 
+        p.creation_date,
+        u.avatar_url as author_avatar_url, 
+        u.username as author_username
+            from posts p 
+            inner join users u on p.author_id = u.id
+            cross join post_likes pl
+            where p.creation_date > NOW() - INTERVAL 3 WEEK
+            group by p.id 
+            order by hotness desc 
+            limit ? 
+            offset ?`;
+        
+        return await query(sql, [currentUserId, limit, offset]);
+    }
+
     findOne = async (params) => {
         const { columnSet, values } = multipleColumnSet(params)
 

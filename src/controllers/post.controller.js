@@ -39,6 +39,37 @@ class PostController {
         res.send(postList);
     };
 
+
+    getAllHottestPosts = async (req, res, next) => {
+        let page = req.query.page ? req.query.page : 0;
+        let limit = req.query.limit ? req.query.limit : 5;
+        
+        let postList = await PostModel.findHottest(page, limit, req.currentUser.id);
+        if (!postList) {
+            throw new HttpException(404, 'Posts not found');
+        }
+
+        postList = postList.map(post => {
+            const formatedPost = {
+                authorName: post.author_username,
+                authorAvatarUrl: post.author_avatar_url,
+                title: post.title,
+                text: post.text,
+                postImageUrl: post.image_url,
+                postCreationDate: post.creation_date,
+                authorId: post.author_id,
+                id: post.id,
+                likes: post.likes,
+                dislikes: post.dislikes,
+                likeStatus: post.like_status || 0,
+                commentsCount: post.comments_count,
+                hotness: post.hotness
+            }
+            return formatedPost;
+        });
+        res.send(postList);
+    };
+
     getPostsByAuthorId = async (req, res, next) => {
         let page = req.query.page ? req.query.page : 0;
         let limit = req.query.limit ? req.query.limit : 5;
