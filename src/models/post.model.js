@@ -61,7 +61,6 @@ class PostModel {
             from posts p 
             inner join users u on p.author_id = u.id
             cross join post_likes pl
-            where p.creation_date > NOW() - INTERVAL 3 WEEK
             group by p.id 
             order by hotness desc 
             limit ? 
