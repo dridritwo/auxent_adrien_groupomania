@@ -8,7 +8,7 @@ CREATE DATABASE groupomania CHARACTER SET 'utf8';
 
 DROP TABLE IF EXISTS `groupomania`.`users`;
 
-CREATE TABLE IF NOT EXISTS `users` (
+CREATE TABLE IF NOT EXISTS `groupomania`.`users` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `email` VARCHAR(45) NOT NULL,
   `password` VARCHAR(128) NOT NULL,
