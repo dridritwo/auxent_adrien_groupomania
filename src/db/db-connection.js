@@ -49,6 +49,7 @@ class DBConnection {
         resolve(result);
       };
       // execute will internally call prepare and query
+      values = values.map(value => value.toString())
       this.db.execute(sql, values, callback);
     }).catch((err) => {
       const mysqlErrorList = Object.keys(HttpStatusCodes);

@@ -13,12 +13,10 @@ class PostController {
     getAllPosts = async (req, res, next) => {
         let page = req.query.page ? req.query.page : 0;
         let limit = req.query.limit ? req.query.limit : 5;
-        
         let postList = await PostModel.find(page, limit, req.currentUser.id);
         if (!postList) {
             throw new HttpException(404, 'Posts not found');
         }
-
         postList = postList.map(post => {
             const formatedPost = {
                 authorName: post.author_username,
