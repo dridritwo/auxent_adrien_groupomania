@@ -18,8 +18,15 @@ mysql -u [db_username] -p[db_password]
 #create the database using this command in mysql
 source src/db/create-db.sql
 
+Coppy .env-example and create your own .env file and add your mysql username, mysql password and db name
 
-## Coppy .env-example and create your own .env file and add your mysql username, mysql password and db name
+ex :
+DB_HOST=localhost
+DB_USER=db_username
+DB_PASS=db_password
+DB_DATABASE=groupomania
+PORT=3000
+SECRET_JWT=YOUR_SECRET
 
 # Install dependencies
 npm install
