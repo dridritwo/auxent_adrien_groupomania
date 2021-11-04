@@ -1,8 +1,10 @@
 # Groupomania, project 7 for Openclassrooms by Adrien Auxent
 
-With boiler-plate inspired by : https://dev.to/juliest88/how-to-build-rest-api-with-nodejs-express-and-mysql-31jk
+Groupomania is a social network to share media and text between employees. This is a student project.
 
-Front end of project can be found at : https://github.com/dridritwo/auxent-adrien-groupomania-front
+It was created following instructions from Openclassrooms' project 7, within its Web Developer carreer path.
+
+Front-end of project can be found at : https://github.com/dridritwo/auxent-adrien-groupomania-front
 
 ### Getting Started
 
@@ -39,3 +41,5 @@ npm run dev
 ```
 
 **Enjoy :)**
+
+With boiler-plate inspired by : https://dev.to/juliest88/how-to-build-rest-api-with-nodejs-express-and-mysql-31jk
