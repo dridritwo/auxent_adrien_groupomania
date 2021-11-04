@@ -4,6 +4,15 @@ Groupomania is a social network to share media and text between employees. This 
 
 It was created following instructions from Openclassrooms' project 7, within its Web Developer carreer path.
 
+Dependencies :
+ - express
+ - express-validator
+ - jsonwebtoken
+ - bcryptjs
+ - cors
+ - mysql2
+ - nodemon
+
 Front-end of project can be found at : https://github.com/dridritwo/auxent-adrien-groupomania-front
 
 ### Getting Started
