@@ -1,4 +1,4 @@
-# Groupomania, project 7 for Openclassrooms by Adrien Auxent
+# Groupomania back by Adrien Auxent
 
 Groupomania is a social network to share media and text between employees. This is a student project.
 
