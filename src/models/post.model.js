@@ -112,8 +112,6 @@ class PostModel {
             order by creation_date desc 
             limit ? 
             offset ?`;
-            console.log("sql : ", sql)
-            console.log("values : ", values)
         const result = await query(sql, [...values, currentUserId, limit, offset]);
 
         // return back the first row 
