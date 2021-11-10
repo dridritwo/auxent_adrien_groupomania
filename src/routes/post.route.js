@@ -5,6 +5,7 @@ const auth = require('../middleware/auth.middleware');
 const postAuth = require('../middleware/postAuth.middleware');
 const Role = require('../utils/userRoles.utils');
 const awaitHandlerFactory = require('../middleware/awaitHandlerFactory.middleware');
+const multer = require('../middleware/multer-config');
 
 const { createPostSchema, updatePostSchema } = require('../middleware/validators/postValidator.middleware');
 

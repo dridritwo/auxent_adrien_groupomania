@@ -1,5 +1,4 @@
 const CommentModel = require("../models/comment.model");
-const LikeModel = require("../models/like.model");
 const PostModel = require("../models/post.model");
 const HttpException = require("../utils/HttpException.utils");
 const { validationResult } = require("express-validator");
@@ -7,7 +6,7 @@ const dotenv = require("dotenv");
 dotenv.config();
 
 /******************************************************************************
- *                              Like Controller
+ *                              Comment Controller
  ******************************************************************************/
 class CommentController {
   createComment = async (req, res, next) => {
